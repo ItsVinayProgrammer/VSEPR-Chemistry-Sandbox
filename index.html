@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>VSEPR Chemistry Sandbox</title>
+  
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Three.js Local -->
+  <script src="libs/three.min.js"></script>
+  
+  <!-- OrbitControls Local -->
+  <script src="libs/OrbitControls.js"></script>
+  
+  <!-- GSAP Local -->
+  <script src="libs/gsap.min.js"></script>
+</head>
+
+<body>
+
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text" id="lbl-loading-text">Loading Chemistry Sandbox...</div>
+  </div>
+
+  <!-- APPLICATION OUTER CONTAINER -->
+  <div id="app-container">
+    
+    <!-- HEADER BAR -->
+    <header>
+      <div class="brand-container">
+        <span class="brand-logo">⚛️</span>
+        <h1 id="lbl-app-title">VSEPR Chemistry Sandbox</h1>
+      </div>
+      
+      <div class="header-actions">
+        <!-- Overarching Language Toggle Button -->
+        <button id="btn-lang-toggle" title="Switch Language / மொழியை மாற்றுக">தமிழ்</button>
+      </div>
+
+      <!-- MODE NAVIGATION TABS -->
+      <div class="tabs-container">
+        <button class="tab-btn active" id="tab-learn">
+          <span></span> <span id="lbl-tab-learn">Learn Reference</span>
+        </button>
+        <button class="tab-btn" id="tab-sandbox">
+          <span></span> <span id="lbl-tab-sandbox">Sandbox Builder</span>
+        </button>
+        <button class="tab-btn" id="tab-real">
+          <span></span> <span id="lbl-tab-real">Real Molecules</span>
+        </button>
+        <button class="tab-btn" id="tab-challenge">
+          <span></span> <span id="lbl-tab-challenge">Challenge Mode</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE SPACE -->
+    <main>
+
+      <!-- SECTION 0: LEARN REFERENCE SECTION (Feature 1) -->
+      <div id="view-learn" style="display: flex;">
+        <div class="learn-table-container">
+          <table class="learn-table">
+            <thead>
+              <tr>
+                <th id="lbl-tbl-total-domains">Total Domains</th>
+                <th id="lbl-tbl-bonding-pairs">Bonding Pairs</th>
+                <th id="lbl-tbl-lone-pairs">Lone Pairs</th>
+                <th id="lbl-tbl-electron-geom">Electron Geometry</th>
+                <th id="lbl-tbl-molecular-geom">Molecular Geometry</th>
+                <th id="lbl-tbl-bond-angle">Ideal Bond Angle</th>
+                <th id="lbl-tbl-examples">Real Examples</th>
+              </tr>
+            </thead>
+            <tbody id="learn-table-body">
+              <!-- Dynamically populated in main.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VIEW PANEL CONTAINER -->
+      <div class="view-panel" id="view-panel-interactive" style="display: none;">
+
+        <!-- THREE.JS CANVAS SIDE (LEFT 70%) -->
+        <div id="canvas-wrapper">
+          
+          <!-- Floating Info Header -->
+          <div class="canvas-overlay-header">
+            <h2 id="molecule-title">Central Atom</h2>
+            <p id="molecule-formula">AX</p>
+          </div>
+
+          <!-- Interactive 3D Canvas -->
+          <canvas id="three-canvas"></canvas>
+
+          <!-- Projected Bond Angle HTML Overlay Labels -->
+          <div id="bond-angles-overlay-container"></div>
+
+          <!-- Rotate Guidance Tag -->
+          <div class="rotate-helper">
+            <span id="lbl-rotate-helper">Drag to rotate | Scroll to zoom</span>
+          </div>
+        </div>
+
+        <!-- CONTROL PANEL SIDE (RIGHT 30%) -->
+        <div id="control-panel">
+          
+          <!-- SECTION 3: GAMIFIED TARGET CHALLENGES (Mode 3 - Redesigned Section 4) -->
+          <div class="panel-card challenge-card" id="card-challenge" style="display: none;">
+            <div class="challenge-card-badge" id="lbl-challenge-badge">🎯 CURRENT CHALLENGE / தற்போதைய சவால்</div>
+            <div class="challenge-number-tag" id="lbl-challenge-number-header">CHALLENGE #1</div>
+            <div class="challenge-card-content">
+              <h3 id="challenge-prompt-text">Build a molecule with a Tetrahedral shape!</h3>
+              <div class="challenge-hint" id="lbl-challenge-hint">
+                Hint: A pyramid has three legs on the base and a single lone pair at the top.
+              </div>
+              <!-- Show Solution Button (Iteration 2.0 Section 5) -->
+              <button class="action-btn btn-primary" id="btn-show-solution" style="display: none; width: 100%;">
+                <span id="lbl-show-solution">Show Solution 💡</span>
+              </button>
+              <button class="action-btn btn-accent" id="btn-check-challenge" style="width: 100%;">
+                <span id="lbl-check-challenge">Check Shape 🔍</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- SECTION 1: FREE BUILDER CONTROLS -->
+          <div class="panel-card" id="card-builder">
+            <h3 id="lbl-add-remove-header">Add / Remove Domains</h3>
+
+            <div class="button-grid">
+              <button class="action-btn btn-primary" id="btn-add-single">
+                <span id="lbl-add-single">➕ Add Single Bond</span>
+              </button>
+              <button class="action-btn btn-primary" id="btn-add-double">
+                <span id="lbl-add-double">➕➕ Add Double Bond</span>
+              </button>
+              <button class="action-btn btn-primary" id="btn-add-triple">
+                <span id="lbl-add-triple">➕➕➕ Add Triple Bond</span>
+              </button>
+              <button class="action-btn btn-accent" id="btn-add-lone">
+                <span id="lbl-add-lone">🟡 Add Lone Pair</span>
+              </button>
+            </div>
+
+            <div class="row-buttons">
+              <button class="action-btn btn-secondary" id="btn-remove-bond">
+                <span>➖</span> <span id="lbl-remove-bond">Bond</span>
+              </button>
+              <button class="action-btn btn-secondary" id="btn-remove-lone">
+                <span>➖</span> <span id="lbl-remove-lone">Lone Pair</span>
+              </button>
+            </div>
+
+            <button class="action-btn btn-danger" id="btn-clear-all">
+              <span id="lbl-clear-all">🗑️ Reset Central Atom</span>
+            </button>
+
+            <!-- QUICK EXAMPLES PANEL (Iteration 2.0 Section 2) -->
+            <div class="quick-examples-section">
+              <span class="quick-examples-title" id="lbl-quick-examples-title">Quick Examples</span>
+              <div class="quick-examples-grid">
+                <button class="btn-pill" id="btn-quick-co2" data-mol="co2">CO₂</button>
+                <button class="btn-pill" id="btn-quick-h2o" data-mol="h2o">H₂O</button>
+                <button class="btn-pill" id="btn-quick-bf3" data-mol="bf3">BF₃</button>
+                <button class="btn-pill" id="btn-quick-sf6" data-mol="sf6">SF₆</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: REAL MOLECULES CLICKABLE BUTTONS GRID (Mode 2 - Feature 4) -->
+          <div class="panel-card" id="card-real" style="display: none;">
+            <h3 id="lbl-select-molecule-header">Select a Molecule</h3>
+            
+            <div class="molecule-grid" id="molecule-buttons-grid">
+              <button class="molecule-grid-btn active" id="btn-mol-co2" data-mol="co2">
+                <strong style="font-size: 0.95rem;">CO₂</strong>
+                <span id="lbl-name-co2" style="font-size: 0.72rem; margin-top: 2px;">Carbon Dioxide</span>
+              </button>
+              <button class="molecule-grid-btn" id="btn-mol-h2o" data-mol="h2o">
+                <strong style="font-size: 0.95rem;">H₂O</strong>
+                <span id="lbl-name-h2o" style="font-size: 0.72rem; margin-top: 2px;">Water</span>
+              </button>
+              <button class="molecule-grid-btn" id="btn-mol-nh3" data-mol="nh3">
+                <strong style="font-size: 0.95rem;">NH₃</strong>
+                <span id="lbl-name-nh3" style="font-size: 0.72rem; margin-top: 2px;">Ammonia</span>
+              </button>
+              <button class="molecule-grid-btn" id="btn-mol-ch4" data-mol="ch4">
+                <strong style="font-size: 0.95rem;">CH₄</strong>
+                <span id="lbl-name-ch4" style="font-size: 0.72rem; margin-top: 2px;">Methane</span>
+              </button>
+              <button class="molecule-grid-btn" id="btn-mol-pcl5" data-mol="pcl5">
+                <strong style="font-size: 0.95rem;">PCl₅</strong>
+                <span id="lbl-name-pcl5" style="font-size: 0.72rem; margin-top: 2px; text-align: center;">Phosphorus Pentachloride</span>
+              </button>
+              <button class="molecule-grid-btn" id="btn-mol-sf6" data-mol="sf6">
+                <strong style="font-size: 0.95rem;">SF₆</strong>
+                <span id="lbl-name-sf6" style="font-size: 0.72rem; margin-top: 2px; text-align: center;">Sulfur Hexafluoride</span>
+              </button>
+            </div>
+
+            <div class="molecule-info-desc" id="real-molecule-desc">
+              Select a molecule from the grid above to examine its structure.
+            </div>
+          </div>
+
+
+          <!-- SECTION 4: DOMAIN INSPECTOR TABLE -->
+          <div class="panel-card">
+            <h3 id="lbl-domain-inspector-header">Domain Inspector</h3>
+            <table class="inspector-table">
+              <tbody>
+                <tr>
+                  <td class="label-col" id="lbl-inspect-bonded-label">Bonded Atoms (B)</td>
+                  <td class="val-col" id="inspect-bonds">1</td>
+                </tr>
+                <tr>
+                  <td class="label-col" id="lbl-inspect-lones-label">Lone Pairs (E)</td>
+                  <td class="val-col" id="inspect-lones">0</td>
+                </tr>
+                <tr style="border-top: 2px solid rgba(226, 232, 240, 0.9); font-weight: 700;">
+                  <td class="label-col" id="lbl-inspect-total-label" style="color: var(--text-main);">Total Domains (N)</td>
+                  <td class="val-col">
+                    <span class="domain-badge" id="inspect-total">1</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- SECTION 5: LIVE OUTPUT GEOMETRIES DISPLAY -->
+          <div class="output-box">
+            <div class="output-item">
+              <span class="output-label" id="lbl-electron-geom-label">Electron Geometry</span>
+              <span class="output-value" id="out-electron-geom">Linear</span>
+            </div>
+            <div class="output-item">
+              <span class="output-label" id="lbl-molecular-geom-label">Molecular Geometry</span>
+              <span class="output-value" id="out-molecular-geom">Linear</span>
+            </div>
+          </div>
+
+          <!-- SECTION 6: VISUAL TOGGLES -->
+          <div class="panel-card">
+            <h3 id="lbl-display-settings-header">Display Settings</h3>
+            
+            <div class="toggle-item">
+              <span class="toggle-label" id="lbl-show-lones">Show Lone Pairs</span>
+              <label class="switch">
+                <input type="checkbox" id="toggle-lone-pairs" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            
+            <div class="toggle-item">
+              <span class="toggle-label" id="lbl-show-angles">Show Bond Angles</span>
+              <label class="switch">
+                <input type="checkbox" id="toggle-bond-angles" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- Auto-Rotation Play/Pause Toggle Control (Bug Fix 3) -->
+            <div class="toggle-item">
+              <span class="toggle-label" id="lbl-auto-rotate">Auto-Rotate Molecule</span>
+              <button class="action-btn btn-secondary" id="btn-auto-rotate" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; font-weight: 700; width: 140px;">
+                ⏸️ Pause
+              </button>
+            </div>
+            
+            <div class="legend-panel">
+              <div class="legend-row">
+                <div class="legend-dot central"></div>
+                <span id="lbl-legend-central">Central Atom</span>
+              </div>
+              <div class="legend-row">
+                <div class="legend-dot outer"></div>
+                <span id="lbl-legend-outer">Outer Atom (Bond)</span>
+              </div>
+              <div class="legend-row" id="legend-row-lp">
+                <div class="legend-dot lone-pair"></div>
+                <span id="lbl-legend-lone">Lone Pair (Electrons)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SECTION: RESULT ANALYSIS SCORECARD VIEW (Repaired Section 1) -->
+      <div id="view-analysis" class="test-results-screen" style="display: none;">
+        <div class="analysis-container">
+          <span style="font-size: 3.5rem;"></span>
+          <h2 id="lbl-analysis-title">Result Analysis Scorecard</h2>
+          
+          <!-- Top Row: Score Percentage Ring -->
+          <div class="score-circle-container">
+            <div class="score-percentage-ring" id="lbl-analysis-percentage">100%</div>
+            <div class="score-fraction" id="lbl-analysis-score">5 / 5</div>
+          </div>
+          
+          <!-- Middle Row: Stats Grid -->
+          <div class="stats-grid">
+            <div class="stats-card">
+              <span class="stats-label" id="lbl-stats-correct-label">Correct Challenges</span>
+              <div class="stats-value" id="lbl-analysis-correct">5</div>
+            </div>
+            <div class="stats-card">
+              <span class="stats-label" id="lbl-stats-wrong-label">Incorrect / Assisted</span>
+              <div class="stats-value" id="lbl-analysis-wrong">0</div>
+            </div>
+            <div class="stats-card stats-card-wide">
+              <span class="stats-label" id="lbl-stats-time-label">Total Time Taken</span>
+              <div class="stats-value" id="lbl-analysis-time">0m 45s</div>
+            </div>
+          </div>
+          
+          <div class="analysis-feedback" id="lbl-analysis-feedback">Perfect Score! You have fully mastered VSEPR molecular shapes!</div>
+          
+          <!-- Bottom Row: Performance/Error breakdown list -->
+          <div class="performance-breakdown-section" style="width: 100%;">
+            <div class="breakdown-title" id="lbl-perf-breakdown-title">Performance Breakdown</div>
+            <ul class="breakdown-list" id="analysis-breakdown-list">
+              <!-- Dynamically populated in main.js -->
+            </ul>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="results-actions">
+            <button class="action-btn btn-primary" id="btn-play-again">
+              <span>🔄</span> <span id="lbl-play-again">Play Again</span>
+            </button>
+            <button class="action-btn btn-secondary" id="btn-go-sandbox">
+              <span>🛠️</span> <span id="lbl-go-sandbox">Change Mode</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- FLOATING WARNING TOASTS -->
+  <div id="toast-container">
+    <div class="toast warning-toast" id="toast-msg">
+      <span id="lbl-toast-message">Maximum electron domains reached for central atom!</span>
+    </div>
+  </div>
+
+  <!-- CELEBRATION MODAL OVERLAY -->
+  <div id="celebration-modal">
+    <div class="celebration-card">
+      <span class="celebration-badge">🏆</span>
+      <h2 id="lbl-celebration-title">Challenge Complete!</h2>
+      <p id="lbl-celebration-msg">You successfully built the Trigonal Pyramidal molecular geometry.</p>
+      <button class="action-btn btn-primary" id="btn-next-challenge" style="width: 100%;">
+        <span id="lbl-next-challenge">Next Challenge ➡️</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CONFETTI CELEBRATION EFFECT OVERLAY -->
+  <div id="confetti-overlay"></div>
+
+  <!-- FLOATING AUTO-TOUR CONTROL BUTTON -->
+  <button id="tour-btn" title="Auto-Tour Molecules">
+    <span id="tour-icon">▶</span> <span id="lbl-tour-btn-text">Play Tour</span>
+  </button>
+
+  <!-- ITERATION 3.0 INTERACTIVE CONTEXTUAL GEOMETRY MODAL -->
+  <div id="geom-modal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="btn-close-geom-modal" title="Close Modal">✕</button>
+      
+      <!-- Left side: 3D Mini Viewer -->
+      <div class="modal-viewer-container">
+        <canvas id="mini-three-canvas"></canvas>
+        <div class="modal-viewer-helper" id="lbl-modal-viewer-helper">Drag to rotate 3D model</div>
+      </div>
+      
+      <!-- Right side: details and metadata info -->
+      <div class="modal-details">
+        <div class="modal-header-section">
+          <span class="modal-subtitle" id="modal-subtitle-geom">Molecular Geometry</span>
+          <h2 class="modal-title" id="modal-title-geom">Bent</h2>
+        </div>
+        
+        <p class="modal-description" id="modal-desc-geom">
+          Description of molecular geometry and steric repulsions.
+        </p>
+        
+        <!-- Key properties grid -->
+        <div class="modal-properties-grid">
+          <div class="prop-item">
+            <span class="prop-label" id="lbl-modal-steric">Steric Number</span>
+            <span class="prop-val" id="modal-val-steric">4</span>
+          </div>
+          <div class="prop-item">
+            <span class="prop-label" id="lbl-modal-bonding">Bonding Pairs</span>
+            <span class="prop-val" id="modal-val-bonding">2</span>
+          </div>
+          <div class="prop-item">
+            <span class="prop-label" id="lbl-modal-lone">Lone Pairs</span>
+            <span class="prop-val" id="modal-val-lone">2</span>
+          </div>
+          <div class="prop-item">
+            <span class="prop-label" id="lbl-modal-angle">Ideal Angle</span>
+            <span class="prop-val" id="modal-val-angle">104.5°</span>
+          </div>
+        </div>
+        
+        <!-- Real-world examples badge section -->
+        <div class="modal-examples-section">
+          <span class="modal-examples-label" id="lbl-modal-examples-title">Real-World Examples</span>
+          <div class="modal-examples-grid" id="modal-examples-container">
+            <!-- Dynamically populated in main.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Imports (Data dictionary first, then scene renderer, then main controller) -->
+  <script src="moleculeData.js"></script>
+  <script src="scene.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
