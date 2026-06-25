@@ -1332,6 +1332,25 @@ function bindEvents() {
     window.buildBondAngles(state);
   });
 
+  // Domain Inspector Click-to-Glow (Task 2)
+  const rowInspectBonds = document.getElementById('row-inspect-bonds');
+  if (rowInspectBonds) {
+    rowInspectBonds.addEventListener('click', () => {
+      if (typeof window.triggerDomainHighlight === 'function') {
+        window.triggerDomainHighlight('bond');
+      }
+    });
+  }
+
+  const rowInspectLones = document.getElementById('row-inspect-lones');
+  if (rowInspectLones) {
+    rowInspectLones.addEventListener('click', () => {
+      if (typeof window.triggerDomainHighlight === 'function') {
+        window.triggerDomainHighlight('lone_pair');
+      }
+    });
+  }
+
   // Language & Auto-rotation control listeners (Bug Fix 3 & Feature 5)
   DOM.btnLangToggle.addEventListener('click', toggleLanguage);
   DOM.btnAutoRotate.addEventListener('click', toggleAutoRotation);

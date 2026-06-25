@@ -372,7 +372,7 @@ function createLocalLonePairLobe() {
   const curve = new THREE.CubicBezierCurve(
     new THREE.Vector2(0, 0.0),       // Attach to central atom (hidden inside)
     new THREE.Vector2(0.01, 0.9),    // Keep stalk extremely narrow past the atom radius (r=0.55)
-    new THREE.Vector2(0.65, 1.3),    // Expand rapidly into a balloon/water-drop bulge
+    new THREE.Vector2(0.85, 1.3),    // Expand rapidly into a balloon/water-drop bulge (increased horizontal bulge from 0.65 to 0.85)
     new THREE.Vector2(0, 1.6)        // Close the balloon at the top
   );
 
@@ -398,7 +398,7 @@ function createLocalLonePairLobe() {
   // 2. Adjust electrons to sit perfectly inside the new higher bulge at y=1.35
   const elecGeom = new THREE.SphereGeometry(0.06, 16, 16);
   const elecMat = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
+    color: 0x000000, // Changed from white (0xffffff) to black (0x000000)
     roughness: 0.4,
     metalness: 0.1
   });
@@ -927,6 +927,72 @@ function projectAngleLabels() {
   });
 }
 
+// Global highlight animation tracking (Task 2)
+let activeHighlightTweens = [];
+let activeHighlightedMaterials = [];
+
+/**
+ * Highlights/glows specific domain meshes (bonds or lone pairs) in the 3D scene using GSAP.
+ */
+function triggerDomainHighlight(type) {
+  // 1. Kill existing tweens and reset materials to prevent overlay stacking
+  activeHighlightTweens.forEach(t => t.kill());
+  activeHighlightTweens = [];
+  
+  activeHighlightedMaterials.forEach(mat => {
+    if (mat) {
+      mat.emissive.setHex(0x000000);
+      mat.emissiveIntensity = 0.0;
+    }
+  });
+  activeHighlightedMaterials = [];
+
+  // 2. Locate target meshes based on domain type
+  const targets = [];
+  activeDomains.forEach(dom => {
+    if (type === 'bond' && dom.type === 'bond') {
+      dom.mesh.traverse(child => {
+        // Find outer atom sphere tip to glow
+        if (child.isMesh && child.name === 'atom_sphere') {
+          targets.push(child);
+        }
+      });
+    } else if (type === 'lone_pair' && dom.type === 'lone_pair') {
+      dom.mesh.traverse(child => {
+        // Highlight both the balloon lobe and internal electrons inside the lone pair group
+        if (child.isMesh) {
+          targets.push(child);
+        }
+      });
+    }
+  });
+
+  // 3. Animate emissive intensity using GSAP with yoyo/repeat
+  const glowColor = type === 'bond' ? 0x00d2ff : 0xffcc00; // Neon blue for bonds, neon yellow for lone pairs
+  targets.forEach(mesh => {
+    const mat = mesh.material;
+    if (mat) {
+      activeHighlightedMaterials.push(mat);
+      
+      mat.emissive.setHex(glowColor);
+      mat.emissiveIntensity = 0.0;
+      
+      const tween = gsap.to(mat, {
+        emissiveIntensity: 2.0,
+        duration: 0.25,
+        yoyo: true,
+        repeat: 3,
+        ease: 'power1.inOut',
+        onComplete: () => {
+          mat.emissive.setHex(0x000000);
+          mat.emissiveIntensity = 0.0;
+        }
+      });
+      activeHighlightTweens.push(tween);
+    }
+  });
+}
+
 // Export functions to window
 window.init3D = init3D;
 window.clear3DScene = clear3DScene;
@@ -934,6 +1000,7 @@ window.renderMoleculeScene = renderMoleculeScene;
 window.setLonePairsVisibility = setLonePairsVisibility;
 window.buildBondAngles = buildBondAngles;
 window.resizeMainCanvas = resizeMainCanvas;
+window.triggerDomainHighlight = triggerDomainHighlight;
 
 // ==========================================================================
 // Interactive Geometry Modal Context (Modal 3D Viewer - Context Isolation)

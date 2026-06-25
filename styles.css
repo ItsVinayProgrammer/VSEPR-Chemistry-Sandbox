@@ -435,6 +435,25 @@ main {
   border-bottom: none;
 }
 
+.clickable-inspector-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-inspector-row:hover {
+  background-color: var(--primary-light);
+}
+
+.clickable-inspector-row:hover td.label-col {
+  color: var(--primary);
+}
+
+.clickable-inspector-row td {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  transition: color 0.2s ease;
+}
+
 .inspector-table td {
   padding: 0.625rem 0;
   font-weight: 500;
