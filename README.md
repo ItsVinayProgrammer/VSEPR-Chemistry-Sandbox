@@ -11,7 +11,7 @@ Welcome to the VSEPR Chemistry Sandbox! I built this to turn learning molecular 
 
 Everything runs fully client-side using vanilla web technologies, with local caching of core library assets to ensure performance without external network blockers.
 
-<img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/b42d5922-6ea2-4d9a-a2d1-7c42cf1af30c" />
+<img width="1911" height="1001" alt="image" src="https://github.com/user-attachments/assets/25b07c49-bb02-4ebe-b729-7bc3dc17189e" />
 
 ---
 
