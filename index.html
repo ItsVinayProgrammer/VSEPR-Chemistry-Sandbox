@@ -21,6 +21,54 @@
 
 <body>
 
+  <!-- INTERACTIVE LANDING PAGE OVERLAY (Task 6) -->
+  <div id="landing-overlay">
+    <div class="landing-background">
+      <div class="glow-orb orb-1"></div>
+      <div class="glow-orb orb-2"></div>
+      <div class="glow-orb orb-3"></div>
+    </div>
+    
+    <div class="landing-content">
+      <div class="landing-header">
+        <div class="landing-logo">⚛️</div>
+        <h1 class="landing-title">VSEPR Chemistry Sandbox</h1>
+        <p class="landing-subtitle">Discover and master molecular geometry in an interactive 3D universe.</p>
+      </div>
+      
+      <div class="landing-grid">
+        <div class="landing-card" data-tab="learn">
+          
+          <h2 class="card-title">Learn Reference</h2>
+          <p class="card-desc">Master molecular geometries, electron domains, and ideal bond angles with our interactive reference sheet.</p>
+          <div class="card-action">Explore Reference</div>
+        </div>
+        
+        <div class="landing-card" data-tab="sandbox">
+          
+          <h2 class="card-title">Sandbox Builder</h2>
+          <p class="card-desc">Free-build mode to construct your own molecules, add single/double/triple bonds, and place lone pairs.</p>
+          <div class="card-action">Start Building</div>
+        </div>
+        
+        <div class="landing-card" data-tab="real">
+          
+          <h2 class="card-title">Real Molecules</h2>
+          <p class="card-desc">Examine real-world structures such as water (H<sub>2</sub>O), carbon dioxide (CO<sub>2</sub>), and sulfur hexafluoride (SF<sub>6</sub>).</p>
+          <div class="card-action">View Molecules</div>
+        </div>
+        
+        <div class="landing-card" data-tab="challenge">
+          
+          <h2 class="card-title">Challenge Mode</h2>
+          <p class="card-desc">Test your knowledge with gamified molecular geometry construction challenges and try to get a perfect score.</p>
+          <div class="card-action">Play Challenge</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- LOADING SCREEN -->
   <div id="loading-screen">
     <div class="spinner"></div>
@@ -113,7 +161,7 @@
           
           <!-- SECTION 3: GAMIFIED TARGET CHALLENGES (Mode 3 - Redesigned Section 4) -->
           <div class="panel-card challenge-card" id="card-challenge" style="display: none;">
-            <div class="challenge-card-badge" id="lbl-challenge-badge">🎯 CURRENT CHALLENGE / தற்போதைய சவால்</div>
+            <div class="challenge-card-badge" id="lbl-challenge-badge">CURRENT CHALLENGE / தற்போதைய சவால்</div>
             <div class="challenge-number-tag" id="lbl-challenge-number-header">CHALLENGE #1</div>
             <div class="challenge-card-content">
               <h3 id="challenge-prompt-text">Build a molecule with a Tetrahedral shape!</h3>
@@ -122,10 +170,13 @@
               </div>
               <!-- Show Solution Button (Iteration 2.0 Section 5) -->
               <button class="action-btn btn-primary" id="btn-show-solution" style="display: none; width: 100%;">
-                <span id="lbl-show-solution">Show Solution 💡</span>
+                <span id="lbl-show-solution">Show Solution</span>
+              </button>
+              <button class="action-btn btn-primary" id="btn-challenge-next" style="display: none; width: 100%;">
+                <span id="lbl-challenge-next-text">Next Challenge</span>
               </button>
               <button class="action-btn btn-accent" id="btn-check-challenge" style="width: 100%;">
-                <span id="lbl-check-challenge">Check Shape 🔍</span>
+                <span id="lbl-check-challenge">Check Shape</span>
               </button>
             </div>
           </div>
@@ -151,25 +202,25 @@
 
             <div class="row-buttons">
               <button class="action-btn btn-secondary" id="btn-remove-bond">
-                <span>➖</span> <span id="lbl-remove-bond">Bond</span>
+                <span>➖</span> <span id="lbl-remove-bond">Remove Bond</span>
               </button>
               <button class="action-btn btn-secondary" id="btn-remove-lone">
-                <span>➖</span> <span id="lbl-remove-lone">Lone Pair</span>
+                <span>➖</span> <span id="lbl-remove-lone">Remove Lone Pair</span>
               </button>
             </div>
 
             <button class="action-btn btn-danger" id="btn-clear-all">
-              <span id="lbl-clear-all">🗑️ Reset Central Atom</span>
+              <span id="lbl-clear-all">Reset Central Atom</span>
             </button>
 
             <!-- QUICK EXAMPLES PANEL (Iteration 2.0 Section 2) -->
             <div class="quick-examples-section">
               <span class="quick-examples-title" id="lbl-quick-examples-title">Quick Examples</span>
               <div class="quick-examples-grid">
-                <button class="btn-pill" id="btn-quick-co2" data-mol="co2">CO₂</button>
-                <button class="btn-pill" id="btn-quick-h2o" data-mol="h2o">H₂O</button>
-                <button class="btn-pill" id="btn-quick-bf3" data-mol="bf3">BF₃</button>
-                <button class="btn-pill" id="btn-quick-sf6" data-mol="sf6">SF₆</button>
+                <button class="btn-pill" id="btn-quick-co2" data-mol="co2">CO<sub>2</sub></button>
+                <button class="btn-pill" id="btn-quick-h2o" data-mol="h2o">H<sub>2</sub>O</button>
+                <button class="btn-pill" id="btn-quick-bf3" data-mol="bf3">BF<sub>3</sub></button>
+                <button class="btn-pill" id="btn-quick-sf6" data-mol="sf6">SF<sub>6</sub></button>
               </div>
             </div>
           </div>
@@ -180,27 +231,27 @@
             
             <div class="molecule-grid" id="molecule-buttons-grid">
               <button class="molecule-grid-btn active" id="btn-mol-co2" data-mol="co2">
-                <strong style="font-size: 0.95rem;">CO₂</strong>
+                <strong style="font-size: 0.95rem;">CO<sub>2</sub></strong>
                 <span id="lbl-name-co2" style="font-size: 0.72rem; margin-top: 2px;">Carbon Dioxide</span>
               </button>
               <button class="molecule-grid-btn" id="btn-mol-h2o" data-mol="h2o">
-                <strong style="font-size: 0.95rem;">H₂O</strong>
+                <strong style="font-size: 0.95rem;">H<sub>2</sub>O</strong>
                 <span id="lbl-name-h2o" style="font-size: 0.72rem; margin-top: 2px;">Water</span>
               </button>
               <button class="molecule-grid-btn" id="btn-mol-nh3" data-mol="nh3">
-                <strong style="font-size: 0.95rem;">NH₃</strong>
+                <strong style="font-size: 0.95rem;">NH<sub>3</sub></strong>
                 <span id="lbl-name-nh3" style="font-size: 0.72rem; margin-top: 2px;">Ammonia</span>
               </button>
               <button class="molecule-grid-btn" id="btn-mol-ch4" data-mol="ch4">
-                <strong style="font-size: 0.95rem;">CH₄</strong>
+                <strong style="font-size: 0.95rem;">CH<sub>4</sub></strong>
                 <span id="lbl-name-ch4" style="font-size: 0.72rem; margin-top: 2px;">Methane</span>
               </button>
               <button class="molecule-grid-btn" id="btn-mol-pcl5" data-mol="pcl5">
-                <strong style="font-size: 0.95rem;">PCl₅</strong>
+                <strong style="font-size: 0.95rem;">PCl<sub>5</sub></strong>
                 <span id="lbl-name-pcl5" style="font-size: 0.72rem; margin-top: 2px; text-align: center;">Phosphorus Pentachloride</span>
               </button>
               <button class="molecule-grid-btn" id="btn-mol-sf6" data-mol="sf6">
-                <strong style="font-size: 0.95rem;">SF₆</strong>
+                <strong style="font-size: 0.95rem;">SF<sub>6</sub></strong>
                 <span id="lbl-name-sf6" style="font-size: 0.72rem; margin-top: 2px; text-align: center;">Sulfur Hexafluoride</span>
               </button>
             </div>
@@ -270,7 +321,7 @@
             <div class="toggle-item">
               <span class="toggle-label" id="lbl-auto-rotate">Auto-Rotate Molecule</span>
               <button class="action-btn btn-secondary" id="btn-auto-rotate" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; font-weight: 700; width: 140px;">
-                ⏸️ Pause
+                Pause
               </button>
             </div>
             
@@ -333,11 +384,14 @@
           
           <!-- Action Buttons -->
           <div class="results-actions">
+            <button class="action-btn btn-accent" id="btn-retry-missed" style="display: none;">
+              <span>🔁</span> <span id="lbl-retry-missed">Retry Missed Questions</span>
+            </button>
             <button class="action-btn btn-primary" id="btn-play-again">
-              <span>🔄</span> <span id="lbl-play-again">Play Again</span>
+              <span></span> <span id="lbl-play-again">Play Again</span>
             </button>
             <button class="action-btn btn-secondary" id="btn-go-sandbox">
-              <span>🛠️</span> <span id="lbl-go-sandbox">Change Mode</span>
+              <span></span> <span id="lbl-go-sandbox">Change Mode</span>
             </button>
           </div>
         </div>
@@ -355,7 +409,7 @@
   <!-- CELEBRATION MODAL OVERLAY -->
   <div id="celebration-modal">
     <div class="celebration-card">
-      <span class="celebration-badge">🏆</span>
+      
       <h2 id="lbl-celebration-title">Challenge Complete!</h2>
       <p id="lbl-celebration-msg">You successfully built the Trigonal Pyramidal molecular geometry.</p>
       <button class="action-btn btn-primary" id="btn-next-challenge" style="width: 100%;">

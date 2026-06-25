@@ -12,8 +12,8 @@ const CPK_COLORS = {
   'C': '#222222',  // Carbon (Dark Grey)
   'O': '#FF0D0D',  // Oxygen (Red)
   'N': '#3050F8',  // Nitrogen (Blue)
-  'F': '#90E050',  // Fluorine (Light Green)
-  'S': '#E6E600',  // Sulfur (Yellow)
+  'F': '#228B22',  // Fluorine (Forest Green)
+  'S': '#FFD700',  // Sulfur (Gold)
   'Cl': '#1FF01F', // Chlorine (Green)
   'P': '#FF8000',  // Phosphorus (Orange)
   'B': '#FFB5B5',  // Boron (Salmon Pink)
@@ -313,7 +313,7 @@ const VSEPR_GEOMETRIES = {
 const REAL_MOLECULES = {
   'co2': {
     name: { en: 'Carbon Dioxide', ta: 'கார்பன் டை ஆக்சைடு' },
-    formula: 'CO₂',
+    formula: 'CO<sub>2</sub>',
     centralAtom: 'C',
     outerAtom: 'O',
     bonds: [
@@ -329,7 +329,7 @@ const REAL_MOLECULES = {
   },
   'h2o': {
     name: { en: 'Water', ta: 'நீர்' },
-    formula: 'H₂O',
+    formula: 'H<sub>2</sub>O',
     centralAtom: 'O',
     outerAtom: 'H',
     bonds: [
@@ -345,7 +345,7 @@ const REAL_MOLECULES = {
   },
   'nh3': {
     name: { en: 'Ammonia', ta: 'அம்மோனியா' },
-    formula: 'NH₃',
+    formula: 'NH<sub>3</sub>',
     centralAtom: 'N',
     outerAtom: 'H',
     bonds: [
@@ -362,7 +362,7 @@ const REAL_MOLECULES = {
   },
   'ch4': {
     name: { en: 'Methane', ta: 'மீத்தேன்' },
-    formula: 'CH₄',
+    formula: 'CH<sub>4</sub>',
     centralAtom: 'C',
     outerAtom: 'H',
     bonds: [
@@ -380,7 +380,7 @@ const REAL_MOLECULES = {
   },
   'pcl5': {
     name: { en: 'Phosphorus Pentachloride', ta: 'பாஸ்பரஸ் பெண்டாகுளோரைடு' },
-    formula: 'PCl₅',
+    formula: 'PCl<sub>5</sub>',
     centralAtom: 'P',
     outerAtom: 'Cl',
     bonds: [
@@ -399,7 +399,7 @@ const REAL_MOLECULES = {
   },
   'sf6': {
     name: { en: 'Sulfur Hexafluoride', ta: 'சல்பர் ஹெக்சாபுளோரைடு' },
-    formula: 'SF₆',
+    formula: 'SF<sub>6</sub>',
     centralAtom: 'S',
     outerAtom: 'F',
     bonds: [
@@ -419,7 +419,7 @@ const REAL_MOLECULES = {
   },
   'bf3': {
     name: { en: 'Boron Trifluoride', ta: 'போரான் முப்புளோரைடு' },
-    formula: 'BF₃',
+    formula: 'BF<sub>3</sub>',
     centralAtom: 'B',
     outerAtom: 'F',
     bonds: [
@@ -486,6 +486,62 @@ const CHALLENGE_PROMPTS = [
     hint: { en: 'Hint: An octahedron has 8 faces and 6 corners. How many bonded domains do you need to place at all 6 corners with no lone pairs?', ta: 'குறிப்பு: ஒரு எண்முகிக்கு 8 முகங்களும் 6 மூலைகளும் உள்ளன. தனித்த ஜோடிகள் இல்லாமல் 6 மூலைகளிலும் வைக்க உங்களுக்கு எத்தனை பிணைப்பு டொமைன்கள் தேவை?' },
     key: '6_0',
     successMsg: { en: 'Superb! Octahedral has 6 bonds and 0 lone pairs. All adjacent bonds are perpendicular, at exactly 90°.', ta: 'அருமை! எண்முகி 6 பிணைப்புகள் மற்றும் 0 தனித்த ஜோடிகளைக் கொண்டுள்ளது. பக்கத்து பிணைப்புகள் அனைத்தும் சரியாக 90° செங்குத்தாக அமைந்துள்ளன.' }
+  },
+  {
+    targetGeometry: { en: 'Linear (2 Domains)', ta: 'நேரியல் (2 டொமைன்கள்)' },
+    prompt: { en: 'Target: Build a Linear molecule with 2 electron domains!', ta: 'இலக்கு: 2 எலக்ட்ரான் டொமைன்களைக் கொண்ட ஒரு நேரியல் மூலக்கூறை உருவாக்குங்கள்!' },
+    hint: { en: 'Hint: A linear molecule with no lone pairs. How many bonds do you need?', ta: 'குறிப்பு: தனித்த ஜோடிகள் இல்லாத ஒரு நேரியல் மூலக்கூறு. உங்களுக்கு எத்தனை பிணைப்புகள் தேவை?' },
+    key: '2_0',
+    successMsg: { en: 'Great job! You built a Linear geometry with 2 bonds and 0 lone pairs.', ta: 'சிறந்த வேலை! நீங்கள் 2 பிணைப்புகள் மற்றும் 0 தனித்த ஜோடிகளுடன் நேரியல் வடிவத்தை உருவாக்கினீர்கள்.' }
+  },
+  {
+    targetGeometry: { en: 'Bent (3 Domains)', ta: 'வளைந்த (3 டொமைன்கள்)' },
+    prompt: { en: 'Target: Build a Bent molecule with a bond angle of approximately 120°!', ta: 'இலக்கு: தோராயமாக 120° பிணைப்புக் கோணத்தைக் கொண்ட ஒரு வளைந்த மூலக்கூறை உருவாக்குங்கள்!' },
+    hint: { en: 'Hint: This shape has 3 total electron domains, but only 2 are bonds. How many lone pairs?', ta: 'குறிப்பு: இந்த வடிவத்தில் மொத்தம் 3 எலக்ட்ரான் டொமைன்கள் உள்ளன, ஆனால் 2 மட்டுமே பிணைப்புகள். எத்தனை தனித்த ஜோடிகள்?' },
+    key: '2_1',
+    successMsg: { en: 'Perfect! You built a Bent shape based on trigonal planar geometry, with 2 bonds and 1 lone pair.', ta: 'அருமை! நீங்கள் முக்கோண சமதள வடிவத்தை அடிப்படையாகக் கொண்ட, 2 பிணைப்புகள் மற்றும் 1 தனித்த ஜோடியுடன் வளைந்த வடிவத்தை உருவாக்கினீர்கள்.' }
+  },
+  {
+    targetGeometry: { en: 'Tetrahedral', ta: 'நான்முகி' },
+    prompt: { en: 'Target: Build a Tetrahedral molecule!', ta: 'இலக்கு: நான்முகி மூலக்கூறை உருவாக்குங்கள்!' },
+    hint: { en: 'Hint: A classic 3D geometry with 4 bonded atoms and no lone pairs on the central atom.', ta: 'குறிப்பு: மைய அணுவில் தனித்த ஜோடிகள் இல்லாத, 4 பிணைக்கப்பட்ட அணுக்களைக் கொண்ட ஒரு உன்னதமான முப்பரிமாண வடிவியல்.' },
+    key: '4_0',
+    successMsg: { en: 'Superb! You built a Tetrahedral molecule, which has exactly 109.5° bond angles.', ta: 'அருமை! நீங்கள் ஒரு நான்முகி மூலக்கூறை உருவாக்கினீர்கள், இது சரியாக 109.5° பிணைப்புக் கோணங்களைக் கொண்டுள்ளது.' }
+  },
+  {
+    targetGeometry: { en: 'Trigonal Bipyramidal', ta: 'முக்கோண இருகூம்பு' },
+    prompt: { en: 'Target: Build a Trigonal Bipyramidal geometry!', ta: 'இலக்கு: முக்கோண இருகூம்பு வடிவத்தை உருவாக்குங்கள்!' },
+    hint: { en: 'Hint: This geometry has 5 total domains, and all of them are bonds.', ta: 'குறிப்பு: இந்த வடிவத்தில் மொத்தம் 5 டொமைன்கள் உள்ளன, அவை அனைத்தும் பிணைப்புகள் ஆகும்.' },
+    key: '5_0',
+    successMsg: { en: 'Excellent! Trigonal Bipyramidal has 5 bonds and 0 lone pairs. It features both 90° and 120° angles.', ta: 'அருமை! முக்கோண இருகூம்பு 5 பிணைப்புகள் மற்றும் 0 தனித்த ஜோடிகளைக் கொண்டுள்ளது. இது 90° மற்றும் 120° ஆகிய இரு கோணங்களையும் கொண்டுள்ளது.' }
+  },
+  {
+    targetGeometry: { en: 'T-Shaped', ta: 'டி-வடிவம்' },
+    prompt: { en: 'Target: Build a T-Shaped molecule!', ta: 'இலக்கு: டி-வடிவ மூலக்கூறை உருவாக்குங்கள்!' },
+    hint: { en: 'Hint: The molecule has 5 total electron domains. 3 are bonds and 2 are lone pairs.', ta: 'குறிப்பு: இந்த மூலக்கூறில் மொத்தம் 5 எலக்ட்ரான் டொமைன்கள் உள்ளன. 3 பிணைப்புகள் மற்றும் 2 தனித்த ஜோடிகள்.' },
+    key: '3_2',
+    successMsg: { en: 'Brilliant! You built the T-Shaped geometry. The 2 lone pairs take up equatorial space, leaving the bonds in a T shape.', ta: 'அற்புதம்! நீங்கள் டி-வடிவத்தை உருவாக்கினீர்கள். 2 தனித்த ஜோடிகள் மத்திய நிலையை ஆக்கிரமித்து, பிணைப்புகளை டி வடிவில் விட்டுவிடுகின்றன.' }
+  },
+  {
+    targetGeometry: { en: 'Square Pyramidal', ta: 'சதுர கூம்பு' },
+    prompt: { en: 'Target: Build a Square Pyramidal geometry!', ta: 'இலக்கு: சதுர கூம்பு வடிவத்தை உருவாக்குங்கள்!' },
+    hint: { en: 'Hint: This molecule has 6 total domains, with 5 bonds and 1 lone pair.', ta: 'குறிப்பு: இந்த மூலக்கூறில் மொத்தம் 6 டொமைன்கள் உள்ளன, இதில் 5 பிணைப்புகள் மற்றும் 1 தனித்த ஜோடி உள்ளன.' },
+    key: '5_1',
+    successMsg: { en: 'Fantastic! Square Pyramidal has 5 bonds and 1 lone pair, pushing the base bonds slightly up.', ta: 'அற்புதம்! சதுர கூம்பு வடிவம் 5 பிணைப்புகள் மற்றும் 1 தனித்த ஜோடியைக் கொண்டுள்ளது, இது அடிப்பக்க பிணைப்புகளைச் சற்று மேல் நோக்கித் தள்ளுகிறது.' }
+  },
+  {
+    targetGeometry: { en: 'Pentagonal Bipyramidal', ta: 'ஐங்கோண இருகூம்பு' },
+    prompt: { en: 'Target: Build a Pentagonal Bipyramidal molecule!', ta: 'இலக்கு: ஐங்கோண இருகூம்பு மூலக்கூறை உருவாக்குங்கள்!' },
+    hint: { en: 'Hint: This requires 7 total electron domains, all of which are bonds.', ta: 'குறிப்பு: இதற்கு மொத்தம் 7 எலக்ட்ரான் டொமைன்கள் தேவைப்படும், அவை அனைத்தும் பிணைப்புகள் ஆகும்.' },
+    key: '7_0',
+    successMsg: { en: 'Incredible! Pentagonal Bipyramidal has 7 bonds and 0 lone pairs, with equatorial angles of 72°.', ta: 'நம்பமுடியாதது! ஐங்கோண இருகூம்பு 7 பிணைப்புகள் மற்றும் 0 தனித்த ஜோடிகளைக் கொண்டுள்ளது, இதன் மத்திய கோணங்கள் 72° ஆகும்.' }
+  },
+  {
+    targetGeometry: { en: 'Pentagonal Planar', ta: 'ஐங்கோண சமதளம்' },
+    prompt: { en: 'Target: Build a Pentagonal Planar geometry!', ta: 'இலக்கு: ஐங்கோண சமதள வடிவத்தை உருவாக்குங்கள்!' },
+    hint: { en: 'Hint: This has 7 total domains. 5 are bonds and 2 are lone pairs. Where do the lone pairs go to keep it flat?', ta: 'குறிப்பு: இதில் மொத்தம் 7 டொமைன்கள் உள்ளன. 5 பிணைப்புகள் மற்றும் 2 தனித்த ஜோடிகள். வடிவத்தைத் தட்டையாக வைத்திருக்க தனித்த ஜோடிகள் எங்கு அமைய வேண்டும்?' },
+    key: '5_2',
+    successMsg: { en: 'Sensational! Pentagonal Planar has 5 bonds and 2 axial lone pairs that cancel each other out.', ta: 'அற்புதம்! ஐங்கோண சமதளம் 5 பிணைப்புகள் மற்றும் ஒன்றை ஒன்று சமன் செய்யும் 2 செங்குத்து தனித்த ஜோடிகளைக் கொண்டுள்ளது.' }
   }
 ];
 
@@ -493,6 +549,7 @@ const CHALLENGE_PROMPTS = [
 const I18N_DICT = {
   en: {
     title: 'VSEPR Chemistry Sandbox',
+    btnRetryMissed: 'Retry Missed Questions',
     tabLearn: 'Learn Reference',
     tabSandbox: 'Sandbox Builder',
     tabReal: 'Real Molecules',
@@ -502,8 +559,8 @@ const I18N_DICT = {
     addDouble: '➕➕ Add Double Bond',
     addTriple: '➕➕➕ Add Triple Bond',
     addLone: '🟡 Add Lone Pair',
-    removeBond: '➖ Bond',
-    removeLone: '➖ Lone Pair',
+    removeBond: 'Remove Bond',
+    removeLone: 'Remove Lone Pair',
     clearAll: 'Reset Central Atom',
     selectMolecule: 'Select a Molecule',
     chooseRealPlaceholder: 'Choose a real molecule...',
@@ -524,10 +581,10 @@ const I18N_DICT = {
     rotateHelper: 'Drag to rotate | Scroll to zoom',
     toastMaxReached: 'Maximum electron domains reached for central atom!',
     challengeComplete: 'Challenge Complete!',
-    nextChallenge: 'Next Challenge ➡️',
+    nextChallenge: 'Next Challenge',
     centralAtomPlaceholder: 'Central Atom',
-    btnPause: '⏸️ Pause',
-    btnPlay: '▶️ Auto-Rotate',
+    btnPause: 'Pause',
+    btnPlay: 'Auto-Rotate',
     waterBtn: 'H₂O (Water)',
     co2Btn: 'CO₂ (Carbon Dioxide)',
     nh3Btn: 'NH₃ (Ammonia)',
@@ -539,8 +596,8 @@ const I18N_DICT = {
     
     // Iteration 2.0 Additions (Section 5)
     quickExamples: 'Quick Examples',
-    btnTourPlay: '▶ Play Tour',
-    btnTourStop: '⏸ Stop Tour',
+    btnTourPlay: 'Play Tour',
+    btnTourStop: 'Stop Tour',
     btnShowSolution: 'Show Solution',
     lblAnalysisTitle: 'Result Analysis Scorecard',
     lblScore: 'Your Score: {score} / 5',
@@ -581,6 +638,7 @@ const I18N_DICT = {
   },
   ta: {
     title: 'VSEPR வேதியியல் சாண்ட்பாக்ஸ்',
+    btnRetryMissed: 'தவறவிட்டவற்றை மீண்டும் முயற்சி',
     tabLearn: 'பயிலும் பகுதி',
     tabSandbox: 'சாண்ட்பாக்ஸ் பில்டர்',
     tabReal: 'நிஜ மூலக்கூறுகள்',
@@ -590,8 +648,8 @@ const I18N_DICT = {
     addDouble: '➕➕ இரட்டை பிணைப்பு சேர்',
     addTriple: '➕➕➕ மும்மை பிணைப்பு சேர்',
     addLone: '🟡 தனித்த ஜோடி சேர்',
-    removeBond: '➖ பிணைப்பு',
-    removeLone: '➖ ஜோடி',
+    removeBond: 'பிணைப்பை நீக்கு',
+    removeLone: 'தனித்த ஜோடியை நீக்கு',
     clearAll: 'மைய அணுவை மீட்டமை',
     selectMolecule: 'ஒரு மூலக்கூறைத் தேர்ந்தெடுக்கவும்',
     chooseRealPlaceholder: 'ஒரு நிஜ மூலக்கூறைத் தேர்ந்தெடுக்கவும்...',
@@ -627,8 +685,8 @@ const I18N_DICT = {
     
     // Iteration 2.0 Additions (Section 5)
     quickExamples: 'விரைவான எடுத்துக்காட்டுகள்',
-    btnTourPlay: '▶ டூர் தொடங்கு',
-    btnTourStop: '⏸ டூரை நிறுத்து',
+    btnTourPlay: 'டூர் தொடங்கு',
+    btnTourStop: 'டூரை நிறுத்து',
     btnShowSolution: 'தீர்வைக் காட்டு',
     lblAnalysisTitle: 'முடிவு பகுப்பாய்வு அட்டை',
     lblScore: 'உங்கள் மதிப்பெண்: {score} / 5',
@@ -682,65 +740,65 @@ const EXAMPLES_METADATA = {
     { name: { en: 'Nitric Oxide', ta: 'நைட்ரிக் ஆக்சைடு' }, formula: 'NO' }
   ],
   '1_3': [
-    { name: { en: 'Chlorine', ta: 'குளோரின்' }, formula: 'Cl₂' }
+    { name: { en: 'Chlorine', ta: 'குளோரின்' }, formula: 'Cl<sub>2</sub>' }
   ],
   '2_0': [
-    { name: { en: 'Carbon Dioxide', ta: 'கார்பன் டை ஆக்சைடு' }, formula: 'CO₂' },
-    { name: { en: 'Beryllium Chloride', ta: 'பெரிலியம் குளோரைடு' }, formula: 'BeCl₂' }
+    { name: { en: 'Carbon Dioxide', ta: 'கார்பன் டை ஆக்சைடு' }, formula: 'CO<sub>2</sub>' },
+    { name: { en: 'Beryllium Chloride', ta: 'பெரிலியம் குளோரைடு' }, formula: 'BeCl<sub>2</sub>' }
   ],
   '3_0': [
-    { name: { en: 'Boron Trifluoride', ta: 'போரான் முப்புளோரைடு' }, formula: 'BF₃' },
-    { name: { en: 'Aluminum Chloride', ta: 'அலுமினியம் குளோரைடு' }, formula: 'AlCl₃' }
+    { name: { en: 'Boron Trifluoride', ta: 'போரான் முப்புளோரைடு' }, formula: 'BF<sub>3</sub>' },
+    { name: { en: 'Aluminum Chloride', ta: 'அலுமினியம் குளோரைடு' }, formula: 'AlCl<sub>3</sub>' }
   ],
   '2_1': [
-    { name: { en: 'Sulfur Dioxide', ta: 'சல்பர் டை ஆக்சைடு' }, formula: 'SO₂' },
-    { name: { en: 'Ozone', ta: 'ஓசோன்' }, formula: 'O₃' }
+    { name: { en: 'Sulfur Dioxide', ta: 'சல்பர் டை ஆக்சைடு' }, formula: 'SO<sub>2</sub>' },
+    { name: { en: 'Ozone', ta: 'ஓசோன்' }, formula: 'O<sub>3</sub>' }
   ],
   '4_0': [
-    { name: { en: 'Methane', ta: 'மீத்தேன்' }, formula: 'CH₄' },
-    { name: { en: 'Silicon Tetrachloride', ta: 'சிலிக்கான் டெட்ராகuளோரைடு' }, formula: 'SiCl₄' }
+    { name: { en: 'Methane', ta: 'மீத்தேன்' }, formula: 'CH<sub>4</sub>' },
+    { name: { en: 'Silicon Tetrachloride', ta: 'சிலிக்கான் டெட்ராகuளோரைடு' }, formula: 'SiCl<sub>4</sub>' }
   ],
   '3_1': [
-    { name: { en: 'Ammonia', ta: 'அம்மோனியா' }, formula: 'NH₃' },
-    { name: { en: 'Phosphine', ta: 'பாஸ்பைன்' }, formula: 'PH₃' }
+    { name: { en: 'Ammonia', ta: 'அம்மோனியா' }, formula: 'NH<sub>3</sub>' },
+    { name: { en: 'Phosphine', ta: 'பாஸ்பைன்' }, formula: 'PH<sub>3</sub>' }
   ],
   '2_2': [
-    { name: { en: 'Water', ta: 'நீர்' }, formula: 'H₂O' },
-    { name: { en: 'Oxygen Difluoride', ta: 'ஆக்சிஜன் டைபுளோரைடு' }, formula: 'OF₂' }
+    { name: { en: 'Water', ta: 'நீர்' }, formula: 'H<sub>2</sub>O' },
+    { name: { en: 'Oxygen Difluoride', ta: 'ஆக்சிஜன் டைபுளோரைடு' }, formula: 'OF<sub>2</sub>' }
   ],
   '5_0': [
-    { name: { en: 'Phosphorus Pentachloride', ta: 'பாஸ்பரஸ் பெண்டாகுளோரைடு' }, formula: 'PCl₅' },
-    { name: { en: 'Arsenic Pentafluoride', ta: 'ஆர்சனிக் பெண்டாபுளோரைடு' }, formula: 'AsF₅' }
+    { name: { en: 'Phosphorus Pentachloride', ta: 'பாஸ்பரஸ் பெண்டாகுளோரைடு' }, formula: 'PCl<sub>5</sub>' },
+    { name: { en: 'Arsenic Pentafluoride', ta: 'ஆர்சனிக் பெண்டாபுளோரைடு' }, formula: 'AsF<sub>5</sub>' }
   ],
   '4_1': [
-    { name: { en: 'Sulfur Tetrafluoride', ta: 'சல்பர் டெட்ராபுளோரைடு' }, formula: 'SF₄' }
+    { name: { en: 'Sulfur Tetrafluoride', ta: 'சல்பர் டெட்ராபுளோரைடு' }, formula: 'SF<sub>4</sub>' }
   ],
   '3_2': [
-    { name: { en: 'Chlorine Trifluoride', ta: 'குளோரின் முப்புளோரைடு' }, formula: 'ClF₃' },
-    { name: { en: 'Bromine Trifluoride', ta: 'புரோமின் முப்புளோரைடு' }, formula: 'BrF₃' }
+    { name: { en: 'Chlorine Trifluoride', ta: 'குளோரின் முப்புளோரைடு' }, formula: 'ClF<sub>3</sub>' },
+    { name: { en: 'Bromine Trifluoride', ta: 'புரோமின் முப்புளோரைடு' }, formula: 'BrF<sub>3</sub>' }
   ],
   '2_3': [
-    { name: { en: 'Xenon Difluoride', ta: 'செனான் டைபுளோரைடு' }, formula: 'XeF₂' }
+    { name: { en: 'Xenon Difluoride', ta: 'செனான் டைபுளோரைடு' }, formula: 'XeF<sub>2</sub>' }
   ],
   '6_0': [
-    { name: { en: 'Sulfur Hexafluoride', ta: 'சல்பர் ஹெக்சாபுளோரைடு' }, formula: 'SF₆' },
-    { name: { en: 'Selenium Hexafluoride', ta: 'செலினியம் ஹெக்சாபுளோரைடு' }, formula: 'SeF₆' }
+    { name: { en: 'Sulfur Hexafluoride', ta: 'சல்பர் ஹெக்சாபுளோரைடு' }, formula: 'SF<sub>6</sub>' },
+    { name: { en: 'Selenium Hexafluoride', ta: 'செலினியம் ஹெக்சாபுளோரைடு' }, formula: 'SeF<sub>6</sub>' }
   ],
   '5_1': [
-    { name: { en: 'Bromine Pentafluoride', ta: 'புரோமின் பெண்டாபுளோரைடு' }, formula: 'BrF₅' },
-    { name: { en: 'Iodine Pentafluoride', ta: 'அயோடின் பெண்டாபுளோரைடு' }, formula: 'IF₅' }
+    { name: { en: 'Bromine Pentafluoride', ta: 'புரோமின் பெண்டாபுளோரைடு' }, formula: 'BrF<sub>5</sub>' },
+    { name: { en: 'Iodine Pentafluoride', ta: 'அயோடின் பெண்டாபுளோரைடு' }, formula: 'IF<sub>5</sub>' }
   ],
   '4_2': [
-    { name: { en: 'Xenon Tetrafluoride', ta: 'செனான் டெட்ராபுளோரைடு' }, formula: 'XeF₄' }
+    { name: { en: 'Xenon Tetrafluoride', ta: 'செனான் டெட்ராபுளோரைடு' }, formula: 'XeF<sub>4</sub>' }
   ],
   '7_0': [
-    { name: { en: 'Iodine Heptafluoride', ta: 'அயோடின் ஹெப்டாபுளோரைடு' }, formula: 'IF₇' }
+    { name: { en: 'Iodine Heptafluoride', ta: 'அயோடின் ஹெப்டாபுளோரைடு' }, formula: 'IF<sub>7</sub>' }
   ],
   '6_1': [
-    { name: { en: 'Xenon Oxypentafluoride Anion', ta: 'செனான் ஆக்சிபெண்டாபுளோரைடு எதிர்மின்அயனி' }, formula: 'XeOF₅⁻' }
+    { name: { en: 'Xenon Oxypentafluoride Anion', ta: 'செனான் ஆக்சிபெண்டாபுளோரைடு எதிர்மின்அயனி' }, formula: 'XeOF<sub>5</sub><sup>-</sup>' }
   ],
   '5_2': [
-    { name: { en: 'Xenon Pentafluoride Anion', ta: 'செனான் பெண்டாபுளோரைடு எதிர்மின்அயனி' }, formula: 'XeF₅⁻' }
+    { name: { en: 'Xenon Pentafluoride Anion', ta: 'செனான் பெண்டாபுளோரைடு எதிர்மின்அயனி' }, formula: 'XeF<sub>5</sub><sup>-</sup>' }
   ]
 };
 

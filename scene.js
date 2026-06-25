@@ -396,7 +396,7 @@ function createLocalLonePairLobe() {
   lobeGroup.add(lobeMesh);
 
   // 2. Adjust electrons to sit perfectly inside the new higher bulge at y=1.35
-  const elecGeom = new THREE.SphereGeometry(0.12, 16, 16);
+  const elecGeom = new THREE.SphereGeometry(0.06, 16, 16);
   const elecMat = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     roughness: 0.4,
@@ -404,10 +404,10 @@ function createLocalLonePairLobe() {
   });
 
   const e1 = new THREE.Mesh(elecGeom, elecMat);
-  e1.position.set(-0.25, 1.35, 0);
+  e1.position.set(-0.12, 1.35, 0);
 
   const e2 = new THREE.Mesh(elecGeom, elecMat);
-  e2.position.set(0.25, 1.35, 0);
+  e2.position.set(0.12, 1.35, 0);
 
   lobeGroup.add(e1);
   lobeGroup.add(e2);

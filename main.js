@@ -117,6 +117,9 @@ const DOM = {
   lblChallengeBadge: document.getElementById('lbl-challenge-badge'),
   btnShowSolution: document.getElementById('btn-show-solution'),
   btnCheckChallenge: document.getElementById('btn-check-challenge'),
+  btnChallengeNext: document.getElementById('btn-challenge-next'),
+  btnRetryMissed: document.getElementById('btn-retry-missed'),
+  lblRetryMissed: document.getElementById('lbl-retry-missed'),
   
   inspectBonds: document.getElementById('inspect-bonds'),
   inspectLones: document.getElementById('inspect-lones'),
@@ -327,7 +330,7 @@ function renderLanguage() {
   DOM.lblTblExamples.textContent = dict.tblExamples;
   
   DOM.lblQuickExamplesTitle.textContent = dict.quickExamples || 'Quick Examples';
-  DOM.lblCheckChallenge.textContent = state.language === 'en' ? 'Check Shape ' : 'வடிவத்தை சரிபார் 🔍';
+  DOM.lblCheckChallenge.textContent = state.language === 'en' ? 'Check Shape' : 'வடிவத்தை சரிபார்';
   DOM.lblShowSolution.textContent = dict.btnShowSolution || 'Show Solution ';
   
   DOM.lblAnalysisTitle.textContent = dict.lblAnalysisTitle || 'Result Analysis Scorecard';
@@ -338,6 +341,9 @@ function renderLanguage() {
   DOM.lblStatsWrongLabel.textContent = dict.statsWrong || 'Incorrect / Assisted';
   DOM.lblStatsTimeLabel.textContent = dict.statsTime || 'Total Time Taken';
   DOM.lblGoSandbox.textContent = dict.btnGoSandbox || 'Go to Sandbox';
+  if (DOM.lblRetryMissed) {
+    DOM.lblRetryMissed.textContent = dict.btnRetryMissed || 'Retry Missed Questions';
+  }
   DOM.lblPerfBreakdownTitle.textContent = dict.perfBreakdown || 'Performance Breakdown';
 
   // Contextual Modal labels
@@ -350,12 +356,12 @@ function renderLanguage() {
   DOM.lblModalViewerHelper.textContent = state.language === 'en' ? 'Drag to rotate 3D model' : '3D மாதிரியை சுழற்ற இழுக்கவும்';
 
   // Clickable grid labels
-  DOM.lblNameCo2.textContent = dict.co2Btn.replace(/CO₂\s*\(/, '').replace(')', '');
-  DOM.lblNameH2o.textContent = dict.waterBtn.replace(/H₂O\s*\(/, '').replace(')', '');
-  DOM.lblNameNh3.textContent = dict.nh3Btn.replace(/NH₃\s*\(/, '').replace(')', '');
-  DOM.lblNameCh4.textContent = dict.ch4Btn.replace(/CH₄\s*\(/, '').replace(')', '');
-  DOM.lblNamePcl5.textContent = dict.pcl5Btn.replace(/PCl₅\s*\(/, '').replace(')', '');
-  DOM.lblNameSf6.textContent = dict.sf6Btn.replace(/SF₆\s*\(/, '').replace(')', '');
+  DOM.lblNameCo2.textContent = dict.co2Btn.replace(/^[^(]+\(\s*/, '').replace(/\s*\)$/, '');
+  DOM.lblNameH2o.textContent = dict.waterBtn.replace(/^[^(]+\(\s*/, '').replace(/\s*\)$/, '');
+  DOM.lblNameNh3.textContent = dict.nh3Btn.replace(/^[^(]+\(\s*/, '').replace(/\s*\)$/, '');
+  DOM.lblNameCh4.textContent = dict.ch4Btn.replace(/^[^(]+\(\s*/, '').replace(/\s*\)$/, '');
+  DOM.lblNamePcl5.textContent = dict.pcl5Btn.replace(/^[^(]+\(\s*/, '').replace(/\s*\)$/, '');
+  DOM.lblNameSf6.textContent = dict.sf6Btn.replace(/^[^(]+\(\s*/, '').replace(/\s*\)$/, '');
 
   // Translate challenge badge
   if (DOM.lblChallengeBadge) {
@@ -703,7 +709,7 @@ function runTourStep() {
 
     // Set header contents directly
     DOM.moleculeTitle.textContent = t(mol.name);
-    DOM.moleculeFormula.textContent = mol.formula + ` (${molecularGeometryName})`;
+    DOM.moleculeFormula.innerHTML = mol.formula + ` (${molecularGeometryName})`;
 
     // Repaint canvas
     window.renderMoleculeScene(state);
@@ -715,11 +721,11 @@ function runTourStep() {
 function updateTourButtonState() {
   const dict = window.I18N_DICT[state.language];
   if (state.isTouring) {
-    DOM.tourIcon.textContent = '⏸';
+    DOM.tourIcon.textContent = '';
     DOM.lblTourBtnText.textContent = dict.btnTourStop || 'Stop Tour';
     DOM.tourBtn.style.background = 'var(--danger)';
   } else {
-    DOM.tourIcon.textContent = '▶';
+    DOM.tourIcon.textContent = '';
     DOM.lblTourBtnText.textContent = dict.btnTourPlay || 'Play Tour';
     DOM.tourBtn.style.background = 'var(--accent)';
   }
@@ -744,22 +750,22 @@ function renderLearnTable() {
   ];
 
   const realExamplesMap = {
-    '2_0': 'CO₂',
-    '3_0': 'BF₃',
-    '2_1': 'SO₂',
-    '4_0': 'CH₄',
-    '3_1': 'NH₃',
-    '2_2': 'H₂O',
-    '5_0': 'PCl₅',
-    '4_1': 'SF₄',
-    '3_2': 'ClF₃',
-    '2_3': 'XeF₂',
-    '6_0': 'SF₆',
-    '5_1': 'BrF₅',
-    '4_2': 'XeF₄',
-    '7_0': 'IF₇',
-    '6_1': 'XeF₅⁻',
-    '5_2': 'XeF₅⁻ (Ideal)'
+    '2_0': 'CO<sub>2</sub>',
+    '3_0': 'BF<sub>3</sub>',
+    '2_1': 'SO<sub>2</sub>',
+    '4_0': 'CH<sub>4</sub>',
+    '3_1': 'NH<sub>3</sub>',
+    '2_2': 'H<sub>2</sub>O',
+    '5_0': 'PCl<sub>5</sub>',
+    '4_1': 'SF<sub>4</sub>',
+    '3_2': 'ClF<sub>3</sub>',
+    '2_3': 'XeF<sub>2</sub>',
+    '6_0': 'SF<sub>6</sub>',
+    '5_1': 'BrF<sub>5</sub>',
+    '4_2': 'XeF<sub>4</sub>',
+    '7_0': 'IF<sub>7</sub>',
+    '6_1': 'XeF<sub>5</sub><sup>-</sup>',
+    '5_2': 'XeF<sub>5</sub><sup>-</sup> (Ideal)'
   };
 
   stableKeys.forEach(key => {
@@ -835,18 +841,18 @@ function renderState() {
   if (state.mode === 'sandbox') {
     if (!state.isTouring) {
       DOM.moleculeTitle.textContent = molecularGeometryName;
-      DOM.moleculeFormula.textContent = buildFormulaNotation(bondedCount, lonePairsCount);
+      DOM.moleculeFormula.innerHTML = buildFormulaNotation(bondedCount, lonePairsCount);
     }
   } else if (state.mode === 'real') {
     const mol = window.REAL_MOLECULES[state.selectedRealMolecule];
     if (mol) {
       DOM.moleculeTitle.textContent = t(mol.name);
-      DOM.moleculeFormula.textContent = mol.formula + ` (${molecularGeometryName})`;
+      DOM.moleculeFormula.innerHTML = mol.formula + ` (${molecularGeometryName})`;
       DOM.realMoleculeDesc.textContent = t(mol.description);
       DOM.realMoleculeDesc.style.display = 'block';
     } else {
       DOM.moleculeTitle.textContent = state.language === 'en' ? 'Select Molecule' : 'மூலக்கூறைத் தேர்ந்தெடு';
-      DOM.moleculeFormula.textContent = '';
+      DOM.moleculeFormula.innerHTML = '';
       DOM.realMoleculeDesc.textContent = window.I18N_DICT[state.language].realMoleculeDescDefault;
       DOM.realMoleculeDesc.style.display = 'block';
     }
@@ -854,7 +860,7 @@ function renderState() {
     const currentChallenge = state.challenge.queue[currentQuestionIndex];
     if (currentChallenge) {
       DOM.moleculeTitle.textContent = (state.language === 'en' ? 'Challenge Task #' : 'சவால் பணி #') + (currentQuestionIndex + 1);
-      DOM.moleculeFormula.textContent = (state.language === 'en' ? 'Target Geometry: ' : 'இலக்கு வடிவம்: ') + t(currentChallenge.targetGeometry);
+      DOM.moleculeFormula.innerHTML = (state.language === 'en' ? 'Target Geometry: ' : 'இலக்கு வடிவம்: ') + t(currentChallenge.targetGeometry);
       
       // Update challenge question text and hint dynamically
       if (DOM.lblChallengePrompt) {
@@ -1018,7 +1024,11 @@ function loadChallenge(index) {
   currentAttempts = 0;
   state.challenge.attempts = 0;
   
+  state.challenge.questionStartTime = Date.now(); // Track question start time
   DOM.btnShowSolution.style.display = 'none'; // Hide solution button initially
+  if (DOM.btnChallengeNext) DOM.btnChallengeNext.style.display = 'none'; // Hide card next button initially
+  if (DOM.btnCheckChallenge) DOM.btnCheckChallenge.style.display = 'block'; // Show check button
+  if (DOM.lblChallengeHint) DOM.lblChallengeHint.style.display = 'block'; // Show hint
   
   const currentChallenge = state.challenge.queue[index];
   if (currentChallenge) {
@@ -1048,11 +1058,13 @@ function checkChallengeShape() {
     state.challenge.correctCount++;
     
     // Record results
+    const timeTaken = (Date.now() - state.challenge.questionStartTime) / 1000;
     state.challenge.detailedResults.push({
       geometry: t(currentChallenge.targetGeometry),
       key: currentChallenge.key,
       attempts: currentAttempts + 1,
-      solutionShown: false
+      solutionShown: false,
+      timeTaken: timeTaken
     });
 
     triggerConfetti();
@@ -1102,11 +1114,13 @@ function showChallengeSolution() {
   }
 
   // Record results
+  const timeTaken = (Date.now() - state.challenge.questionStartTime) / 1000;
   state.challenge.detailedResults.push({
     geometry: geomName,
     key: currentChallenge.key,
     attempts: currentAttempts,
-    solutionShown: true
+    solutionShown: true,
+    timeTaken: timeTaken
   });
 
   // Load solution atoms
@@ -1121,19 +1135,12 @@ function showChallengeSolution() {
   renderState(); // Repaint
 
   const dict = window.I18N_DICT[state.language];
-  DOM.lblCelebrationTitle.textContent = dict.btnShowSolution || 'Solution';
-  DOM.lblCelebrationMsg.textContent = dict.lblSolutionBuilt || 'Solution loaded! Observe the configuration.';
+  DOM.lblChallengePrompt.textContent = dict.lblSolutionBuilt || 'Solution loaded! Observe the placement of the outer bonds and lone pair lobes.';
+  DOM.lblChallengeHint.style.display = 'none';
 
-  const nextBtnLabel = DOM.btnNextChallenge.querySelector('#lbl-next-challenge') || DOM.lblCelebrationNext;
-  if (currentQuestionIndex >= state.challenge.queue.length - 1) {
-    nextBtnLabel.textContent = state.language === 'en' ? 'See Results' : 'முடிவுகளைப் பார்';
-  } else {
-    nextBtnLabel.textContent = state.language === 'en' ? 'Next Challenge' : 'அடுத்த சவால்';
-  }
-
-  setTimeout(() => {
-    DOM.celebrationModal.classList.add('show');
-  }, 450);
+  DOM.btnCheckChallenge.style.display = 'none';
+  DOM.btnShowSolution.style.display = 'none';
+  DOM.btnChallengeNext.style.display = 'block';
 }
 
 function handleNextChallenge() {
@@ -1157,10 +1164,10 @@ function showResultAnalysis() {
   const dict = window.I18N_DICT[state.language];
   
   // 1. Final Score Fraction
-  DOM.lblAnalysisScore.textContent = `${state.challenge.correctCount} / 5`;
+  DOM.lblAnalysisScore.textContent = `${state.challenge.correctCount} / ${state.challenge.queue.length}`;
 
   // 2. Percentage
-  const percentageValue = Math.round((state.challenge.correctCount / 5) * 100);
+  const percentageValue = Math.round((state.challenge.correctCount / state.challenge.queue.length) * 100);
   DOM.lblAnalysisPercentage.textContent = `${percentageValue}%`;
 
   // 3. Time Taken
@@ -1174,11 +1181,11 @@ function showResultAnalysis() {
     DOM.lblAnalysisCorrect.textContent = state.challenge.correctCount;
   }
   if (DOM.lblAnalysisWrong) {
-    DOM.lblAnalysisWrong.textContent = 5 - state.challenge.correctCount;
+    DOM.lblAnalysisWrong.textContent = state.challenge.queue.length - state.challenge.correctCount;
   }
 
   // 4. Feedback
-  if (state.challenge.correctCount === 5) {
+  if (state.challenge.correctCount === state.challenge.queue.length) {
     DOM.lblAnalysisFeedback.textContent = dict.lblPerfectScore || 'Perfect Score! You have fully mastered VSEPR molecular shapes!';
   } else {
     DOM.lblAnalysisFeedback.textContent = state.language === 'en' 
@@ -1187,6 +1194,13 @@ function showResultAnalysis() {
   }
 
   // 5. Build structured breakdown list (Iteration 3.0 Section 1)
+  const missedCount = state.challenge.detailedResults.filter(res => res.solutionShown || res.timeTaken > 30).length;
+  if (missedCount > 0 && state.challenge.queue.length > 0) {
+    DOM.btnRetryMissed.style.display = 'block';
+  } else {
+    DOM.btnRetryMissed.style.display = 'none';
+  }
+
   DOM.analysisBreakdownList.innerHTML = '';
   state.challenge.detailedResults.forEach(res => {
     const row = document.createElement('li');
@@ -1324,6 +1338,12 @@ function bindEvents() {
 
   // Challenge modal trigger next
   DOM.btnNextChallenge.addEventListener('click', handleNextChallenge);
+  if (DOM.btnChallengeNext) {
+    DOM.btnChallengeNext.addEventListener('click', handleNextChallenge);
+  }
+  if (DOM.btnRetryMissed) {
+    DOM.btnRetryMissed.addEventListener('click', startRetryChallengeSet);
+  }
 
   // Auto-Tour button event listener
   DOM.tourBtn.addEventListener('click', toggleTour);
@@ -1352,6 +1372,30 @@ function bindEvents() {
   if (DOM.viewLearn) {
     DOM.viewLearn.addEventListener('scroll', () => hideLearnHeaderTooltips(), { passive: true });
   }
+
+  // Wire up interactive landing page card clicks (Task 6)
+  document.querySelectorAll('.landing-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const tab = card.getAttribute('data-tab');
+       const landing = document.getElementById('landing-overlay');
+      if (landing) {
+        landing.classList.add('hide');
+        setTimeout(() => {
+          landing.style.display = 'none';
+        }, 800);
+      }
+      
+      switchMode(tab);
+      
+      // Trigger canvas resize after landing page slide out completes
+      setTimeout(() => {
+        if (window.resizeMainCanvas) {
+          window.resizeMainCanvas();
+        }
+        window.dispatchEvent(new Event('resize'));
+      }, 800);
+    });
+  });
 }
 
 // ==========================================================================
@@ -1452,3 +1496,23 @@ window.runDiagnosticsSuite = function() {
 
   runNextTest();
 };
+
+function startRetryChallengeSet() {
+  const missed = state.challenge.detailedResults.filter(res => res.solutionShown || res.timeTaken > 30);
+  const missedPrompts = missed.map(res => window.CHALLENGE_PROMPTS.find(p => p.key === res.key)).filter(Boolean);
+  
+  if (missedPrompts.length > 0) {
+    state.challenge.queue = missedPrompts;
+    currentQuestionIndex = 0;
+    currentAttempts = 0;
+    state.challenge.currentIndex = 0;
+    state.challenge.attempts = 0;
+    state.challenge.history = [];
+    state.challenge.correctCount = 0;
+    state.challenge.startTime = Date.now();
+    state.challenge.detailedResults = [];
+    
+    switchMode('challenge');
+    loadChallenge(0);
+  }
+}
