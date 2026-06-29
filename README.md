@@ -29,7 +29,7 @@ Everything runs fully client-side using vanilla web technologies, with local cac
 
 ## Production Deployment
 
-https://akshaycancode-2.github.io/VSEPR-Chemistry-Sandbox/
+deployed link : https://akshaycancode-2.github.io/VSEPR-Chemistry-Sandbox/
 
 Since this is a client-side static application, you don't need compilation steps, backend environments, or server-side setups.
 
